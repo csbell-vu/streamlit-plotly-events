@@ -20,10 +20,10 @@ class CustomInstallCommand(install):
         subprocess.run(['npm', 'run', 'build'], check=True)
 
         # Optional: Clean up node_modules or other build files if they are not needed
-        #if os.path.exists('node_modules'):
-        #    shutil.rmtree('node_modules')
-        #if os.path.exists('dist'):  # or any other build directories
-        #    shutil.rmtree('dist')
+        if os.path.exists('node_modules'):
+            shutil.rmtree('node_modules')
+        if os.path.exists('dist'):  # or any other build directories
+            shutil.rmtree('dist')
 
         # Change back to the original setup.py directory
         os.chdir('../../../')  # Adjust according to your directory structure
