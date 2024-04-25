@@ -1,6 +1,10 @@
 import os
 import streamlit.components.v1 as components
 from json import loads
+import json
+
+import plotly.io as pio
+pio.templates.default = "plotly_white"
 
 # Create a _RELEASE constant. We'll set this to False while we're developing
 # the component, and True when we're ready to package and distribute it.
@@ -18,6 +22,8 @@ _RELEASE = True
 # *only thing* you need to do to create the binding between Streamlit and
 # your component frontend. Everything else we do in this file is simply a
 # best practice.
+
+
 
 if not _RELEASE:
     _component_func = components.declare_component(
@@ -49,7 +55,7 @@ def plotly_events(
     click_event=True,
     select_event=False,
     hover_event=False,
-    override_height=450,
+    override_height=None,
     override_width=None,
     use_container_width=True,
     key=None,
@@ -118,6 +124,7 @@ def plotly_events(
 if not _RELEASE:
     import streamlit as st
     import plotly.express as px
+    import plotly.io as pio
 
     st.set_page_config(layout="wide")
 
