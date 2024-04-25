@@ -8,15 +8,36 @@ import Plot from 'react-plotly.js';
 
 class StreamlitPlotlyEventsComponent extends StreamlitComponentBase {
   public render = (): ReactNode => {
+    
+    console.log(this.props.args["override_width"])
+    
     // Pull Plotly object from args and parse
     const plot_obj = JSON.parse(this.props.args["plot_obj"]);
     const override_height = this.props.args["override_height"];
+
+    // Set width based on use_container width or provided with if not overriden by user
+    const use_container_width = this.props.args["use_container_width"];
     const override_width = this.props.args["override_width"];
+    let width = override_width ? override_width : this.props.width;
+    width = use_container_width ? this.props.width : override_width;
+
+    // Make the actual plotly chart size responsive if desired
+    plot_obj.layout.width = width;
 
     // Event booleans
     const click_event = this.props.args["click_event"];
     const select_event = this.props.args["select_event"];
     const hover_event = this.props.args["hover_event"];
+
+    // Streamlit sends us a theme object via props that we can use to ensure
+    // that our component has visuals that match the active theme in a
+    // streamlit app but we won't use it for now.
+    //const { theme } = this.props
+    const style: React.CSSProperties = {
+      width: width,
+      overflowX: 'auto',
+      overflowY: 'hidden',
+    }
 
     Streamlit.setFrameHeight(override_height);
     return (
@@ -28,7 +49,7 @@ class StreamlitPlotlyEventsComponent extends StreamlitComponentBase {
         onClick={click_event ? this.plotlyEventHandler : function(){}}
         onSelected={select_event ? this.plotlyEventHandler : function(){}}
         onHover={hover_event ? this.plotlyEventHandler : function(){}}
-        style={{width: override_width, height: override_height}}
+        style={style}
         className="stPlotlyChart"
       />
     )

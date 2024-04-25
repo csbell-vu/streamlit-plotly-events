@@ -50,7 +50,8 @@ def plotly_events(
     select_event=False,
     hover_event=False,
     override_height=450,
-    override_width="100%",
+    override_width=None,
+    use_container_width=True,
     key=None,
 ):
     """Create a new instance of "plotly_events".
@@ -93,6 +94,7 @@ def plotly_events(
             }
 
     """
+
     # kwargs will be exposed to frontend in "args"
     component_value = _component_func(
         plot_obj=plot_fig.to_json(),
@@ -102,6 +104,7 @@ def plotly_events(
         click_event=click_event,
         select_event=select_event,
         hover_event=hover_event,
+        use_container_width=use_container_width,
         default="[]",  # Default return empty JSON list
     )
 
@@ -126,7 +129,7 @@ if not _RELEASE:
 
     # Here we add columns to check auto-resize/etc
     st.subheader("Plotly Bar Chart (With columns)")
-    _, c2, _ = st.beta_columns((1, 6, 1))
+    _, c2, _ = st.columns((1, 6, 1))
     with c2:
         fig2 = px.bar(x=[0, 1, 2, 3], y=[0, 1, 2, 3])
         plot_name_holder2 = st.empty()
